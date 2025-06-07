@@ -1,0 +1,170 @@
+{
+  "@@locale": "zh",
+  "appTitle": "Swift Scan",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "navScan": "扫描",
+  "@navScan": {
+    "description": "Navigation label for scan tab"
+  },
+  "navHistory": "历史",
+  "@navHistory": {
+    "description": "Navigation label for history tab"
+  },
+  "navSettings": "设置",
+  "@navSettings": {
+    "description": "Navigation label for settings tab"
+  },
+  "navAbout": "关于",
+  "@navAbout": {
+    "description": "Navigation label for about tab"
+  },
+  "homeTitle": "二维码扫描器",
+  "@homeTitle": {
+    "description": "Title for the home page"
+  },
+  "homeInstruction": "将相机对准二维码进行扫描",
+  "@homeInstruction": {
+    "description": "Instruction text on home page"
+  },
+  "homeFlashOn": "闪光灯开启",
+  "@homeFlashOn": {
+    "description": "Flash on button text"
+  },
+  "homeFlashOff": "闪光灯关闭",
+  "@homeFlashOff": {
+    "description": "Flash off button text"
+  },
+  "homeSwitchCamera": "切换相机",
+  "@homeSwitchCamera": {
+    "description": "Switch camera button text"
+  },
+  "homeSelectImage": "选择图片",
+  "@homeSelectImage": {
+    "description": "Select image button text"
+  },
+  "settingsTitle": "设置",
+  "@settingsTitle": {
+    "description": "Settings page title"
+  },
+  "settingsLanguage": "语言",
+  "@settingsLanguage": {
+    "description": "Language setting label"
+  },
+  "settingsHapticFeedback": "触觉反馈",
+  "@settingsHapticFeedback": {
+    "description": "Haptic feedback setting label"
+  },
+  "settingsHapticFeedbackDesc": "检测到二维码时震动",
+  "@settingsHapticFeedbackDesc": {
+    "description": "Haptic feedback setting description"
+  },
+  "introWelcome": "欢迎使用 Swift Scan",
+  "@introWelcome": {
+    "description": "Welcome message on intro page"
+  },
+  "introTitle1": "扫描二维码",
+  "@introTitle1": {
+    "description": "First intro page title"
+  },
+  "introDesc1": "使用相机快速扫描任何二维码，闪电般的检测速度",
+  "@introDesc1": {
+    "description": "First intro page description"
+  },
+  "introTitle2": "查看历史",
+  "@introTitle2": {
+    "description": "Second intro page title"
+  },
+  "introDesc2": "记录所有扫描的代码，随时访问",
+  "@introDesc2": {
+    "description": "Second intro page description"
+  },
+  "introTitle3": "分享和保存",
+  "@introTitle3": {
+    "description": "Third intro page title"
+  },
+  "introDesc3": "一键复制、分享或打开扫描的内容",
+  "@introDesc3": {
+    "description": "Third intro page description"
+  },
+  "introNext": "下一步",
+  "@introNext": {
+    "description": "Next button text on intro page"
+  },  "introGetStarted": "开始使用",
+  "@introGetStarted": {
+    "description": "Get started button text on intro page"
+  },
+  "aboutTitle": "关于 Swift Scan",
+  "@aboutTitle": {
+    "description": "About page title"
+  },
+  "aboutVersion": "版本",
+  "@aboutVersion": {
+    "description": "Version label on about page"
+  },
+  "aboutDescription": "Swift Scan 是一款强大且直观的二维码扫描器，让扫描二维码比以往任何时候都更快更容易。采用现代技术构建，提供闪电般的检测速度和无缝的用户体验。",
+  "@aboutDescription": {
+    "description": "App description on about page"
+  },
+  "aboutFeatures": "功能特色",
+  "@aboutFeatures": {
+    "description": "Features section title on about page"
+  },
+  "aboutFeature1": "闪电般的二维码检测",
+  "@aboutFeature1": {
+    "description": "First feature description"
+  },
+  "aboutFeature2": "支持多种二维码格式",
+  "@aboutFeature2": {
+    "description": "Second feature description"
+  },
+  "aboutFeature3": "扫描历史记录，轻松访问",
+  "@aboutFeature3": {
+    "description": "Third feature description"
+  },
+  "aboutFeature4": "分享和保存扫描内容",
+  "@aboutFeature4": {
+    "description": "Fourth feature description"
+  },
+  "aboutFeature5": "支持深色和浅色主题",
+  "@aboutFeature5": {
+    "description": "Fifth feature description"
+  },
+  "aboutFeature6": "多语言支持",
+  "@aboutFeature6": {
+    "description": "Sixth feature description"
+  },
+  "aboutDeveloper": "开发者",
+  "@aboutDeveloper": {
+    "description": "Developer section title"
+  },
+  "aboutDeveloperName": "Swift Scan 团队",
+  "@aboutDeveloperName": {
+    "description": "Developer name"
+  },
+  "aboutContact": "联系我们",
+  "@aboutContact": {
+    "description": "Contact section title"
+  },
+  "aboutEmail": "邮箱",
+  "@aboutEmail": {
+    "description": "Email label"
+  },
+  "aboutWebsite": "网站",
+  "@aboutWebsite": {
+    "description": "Website label"
+  },
+  "aboutPrivacy": "隐私政策",
+  "@aboutPrivacy": {
+    "description": "Privacy policy link"
+  },
+  "aboutTerms": "服务条款",
+  "@aboutTerms": {
+    "description": "Terms of service link"
+  },
+  "aboutLicenses": "开源许可证",
+  "@aboutLicenses": {
+    "description": "Open source licenses link"
+  }
+}

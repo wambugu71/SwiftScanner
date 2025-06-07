@@ -1,0 +1,170 @@
+{
+  "@@locale": "ta",
+  "appTitle": "Swift Scan",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "navScan": "ஸ்கேன்",
+  "@navScan": {
+    "description": "Navigation label for scan tab"
+  },
+  "navHistory": "வரலாறு",
+  "@navHistory": {
+    "description": "Navigation label for history tab"
+  },
+  "navSettings": "அமைப்புகள்",
+  "@navSettings": {
+    "description": "Navigation label for settings tab"
+  },
+  "navAbout": "பற்றி",
+  "@navAbout": {
+    "description": "Navigation label for about tab"
+  },
+  "homeTitle": "QR குறியீடு ஸ்கேனர்",
+  "@homeTitle": {
+    "description": "Title for the home page"
+  },
+  "homeInstruction": "QR குறியீட்டை ஸ்கேன் செய்ய உங்கள் கேமராவை அதன் மீது செலுத்துங்கள்",
+  "@homeInstruction": {
+    "description": "Instruction text on home page"
+  },
+  "homeFlashOn": "ஃபிளாஷ் ஆன்",
+  "@homeFlashOn": {
+    "description": "Flash on button text"
+  },
+  "homeFlashOff": "ஃபிளாஷ் ஆஃப்",
+  "@homeFlashOff": {
+    "description": "Flash off button text"
+  },
+  "homeSwitchCamera": "கேமராவை மாற்று",
+  "@homeSwitchCamera": {
+    "description": "Switch camera button text"
+  },
+  "homeSelectImage": "படத்தைத் தேர்ந்தெடு",
+  "@homeSelectImage": {
+    "description": "Select image button text"
+  },
+  "settingsTitle": "அமைப்புகள்",
+  "@settingsTitle": {
+    "description": "Settings page title"
+  },
+  "settingsLanguage": "மொழி",
+  "@settingsLanguage": {
+    "description": "Language setting label"
+  },
+  "settingsHapticFeedback": "ஹாப்டிக் பின்னூட்டம்",
+  "@settingsHapticFeedback": {
+    "description": "Haptic feedback setting label"
+  },
+  "settingsHapticFeedbackDesc": "QR குறியீடு கண்டறியப்படும்போது அதிர்வு",
+  "@settingsHapticFeedbackDesc": {
+    "description": "Haptic feedback setting description"
+  },
+  "introWelcome": "Swift Scan-க்கு வரவேற்கிறோம்",
+  "@introWelcome": {
+    "description": "Welcome message on intro page"
+  },
+  "introTitle1": "QR குறியீடுகளை ஸ்கேன் செய்யுங்கள்",
+  "@introTitle1": {
+    "description": "First intro page title"
+  },
+  "introDesc1": "உங்கள் கேமராவைப் பயன்படுத்தி மின்னல் வேக கண்டறிதலுடன் எந்த QR குறியீட்டையும் விரைவாக ஸ்கேன் செய்யுங்கள்",
+  "@introDesc1": {
+    "description": "First intro page description"
+  },
+  "introTitle2": "வரலாற்றைப் பார்க்கவும்",
+  "@introTitle2": {
+    "description": "Second intro page title"
+  },
+  "introDesc2": "உங்கள் அனைத்து ஸ்கேன் செய்யப்பட்ட குறியீடுகளின் கணக்கை வைத்துக்கொண்டு எந்த நேரத்திலும் அவற்றை அணுகவும்",
+  "@introDesc2": {
+    "description": "Second intro page description"
+  },
+  "introTitle3": "பகிர் & சேமி",
+  "@introTitle3": {
+    "description": "Third intro page title"
+  },
+  "introDesc3": "ஒரே தட்டுதலில் ஸ்கேன் செய்யப்பட்ட உள்ளடக்கத்தை நகலெடுக்கவும், பகிரவும் அல்லது திறக்கவும்",
+  "@introDesc3": {
+    "description": "Third intro page description"
+  },
+  "introNext": "அடுத்து",
+  "@introNext": {
+    "description": "Next button text on intro page"
+  },  "introGetStarted": "தொடங்குங்கள்",
+  "@introGetStarted": {
+    "description": "Get started button text on intro page"
+  },
+  "aboutTitle": "Swift Scan பற்றி",
+  "@aboutTitle": {
+    "description": "About page title"
+  },
+  "aboutVersion": "பதிப்பு",
+  "@aboutVersion": {
+    "description": "Version label on about page"
+  },
+  "aboutDescription": "Swift Scan ஒரு சக்திவாய்ந்த மற்றும் உள்ளுணர்வுள்ள QR குறியீடு ஸ்கேனர் ஆகும், இது குறியீடுகளை ஸ்கேன் செய்வதை முன்னெப்போதையும் விட வேகமாகவும் எளிதாகவும் செய்கிறது. மின்னல் வேக கண்டறிதல் மற்றும் தடையற்ற பயனர் அனுபவத்தை வழங்க நவீன தொழில்நுட்பத்துடன் கட்டமைக்கப்பட்டுள்ளது.",
+  "@aboutDescription": {
+    "description": "App description on about page"
+  },
+  "aboutFeatures": "அம்சங்கள்",
+  "@aboutFeatures": {
+    "description": "Features section title on about page"
+  },
+  "aboutFeature1": "மின்னல் வேக QR குறியீடு கண்டறிதல்",
+  "@aboutFeature1": {
+    "description": "First feature description"
+  },
+  "aboutFeature2": "பல QR குறியீடு வடிவங்களுக்கான ஆதரவு",
+  "@aboutFeature2": {
+    "description": "Second feature description"
+  },
+  "aboutFeature3": "எளிதான அணுகலுடன் ஸ்கேன் வரலாறு",
+  "@aboutFeature3": {
+    "description": "Third feature description"
+  },
+  "aboutFeature4": "ஸ்கேன் செய்யப்பட்ட உள்ளடக்கத்தை பகிரவும் சேமிக்கவும்",
+  "@aboutFeature4": {
+    "description": "Fourth feature description"
+  },
+  "aboutFeature5": "இருண்ட மற்றும் வெளிச்ச தீம் ஆதரவு",
+  "@aboutFeature5": {
+    "description": "Fifth feature description"
+  },
+  "aboutFeature6": "பல மொழி ஆதரவு",
+  "@aboutFeature6": {
+    "description": "Sixth feature description"
+  },
+  "aboutDeveloper": "டெவலப்பர்",
+  "@aboutDeveloper": {
+    "description": "Developer section title"
+  },
+  "aboutDeveloperName": "Swift Scan குழு",
+  "@aboutDeveloperName": {
+    "description": "Developer name"
+  },
+  "aboutContact": "எங்களை தொடர்பு கொள்ளுங்கள்",
+  "@aboutContact": {
+    "description": "Contact section title"
+  },
+  "aboutEmail": "மின்னஞ்சல்",
+  "@aboutEmail": {
+    "description": "Email label"
+  },
+  "aboutWebsite": "வலைத்தளம்",
+  "@aboutWebsite": {
+    "description": "Website label"
+  },
+  "aboutPrivacy": "தனியுரிமை கொள்கை",
+  "@aboutPrivacy": {
+    "description": "Privacy policy link"
+  },
+  "aboutTerms": "சேவை விதிமுறைகள்",
+  "@aboutTerms": {
+    "description": "Terms of service link"
+  },
+  "aboutLicenses": "திறந்த மூல உரிமங்கள்",
+  "@aboutLicenses": {
+    "description": "Open source licenses link"
+  }
+}

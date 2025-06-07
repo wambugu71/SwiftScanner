@@ -1,0 +1,671 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class QRImageScannerPage extends StatefulWidget {
+  const QRImageScannerPage({super.key});
+
+  @override
+  State<QRImageScannerPage> createState() => _QRImageScannerPageState();
+}
+
+class _QRImageScannerPageState extends State<QRImageScannerPage> {
+   final ImagePicker _picker = ImagePicker();
+  File? _imageFile;
+  BarcodeScanner? barcodeScanner = BarcodeScanner(formats: [BarcodeFormat.all]);
+
+  // var _imagePath;
+  String _scanResult = 'No image selected';
+  bool _isBusy = false;
+  bool is_image_selected = false;
+  //final BarcodeScanner barcodeScanner = BarcodeScanner(
+  //  formats: [BarcodeFormat.all], // Add more formats
+  //);
+
+  bool _is_result_url = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _requestPermissions();
+  }
+
+  Future<void> _requestPermissions() async {
+    // Request storage permissions
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt <= 32) {
+        await Permission.storage.request();
+        await Permission.camera.request();
+      } else {
+        await Permission.photos.request();
+        await Permission.camera.request();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    barcodeScanner?.close();
+
+    _imageFile?.delete();
+  }
+
+  Future<void> scanQRFromImage() async {
+    // if (_imageFile == null || barcodeScanner == null) return;
+
+    final InputImage inputImage = InputImage.fromFile(_imageFile!);
+    try {
+      final List<Barcode> barcodes = await barcodeScanner!.processImage(
+        inputImage,
+      );
+
+      String result = '';
+      for (Barcode barcode in barcodes) {
+        final String? value = barcode.rawValue;
+        if (value != null) {
+          result += '$value\n';
+        }
+      }
+      setState(() {
+        _scanResult = result.isNotEmpty
+            ? result.trim()
+            : 'No QR code found in image';
+        _isBusy = false;
+      });
+    } catch (e) {
+      print('Scanning error: $e');
+      setState(() {
+        _scanResult = 'Failed to scan image. Please try another image.';
+        _isBusy = false;
+      });
+    }
+  }
+
+  Future<void> _getImageAndScan() async {
+    try {
+      // Check permissions first
+      bool hasPermission = await _checkPermissions();
+      if (!hasPermission) {
+        _showPermissionDialog();
+        return;
+      }
+
+      final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 85, // Reduce quality to prevent memory issues
+      );
+
+      if (pickedFile != null) {
+        final file = File(pickedFile.path);
+        if (await file.exists()) {
+          setState(() {
+            _imageFile = file;
+            _scanResult = 'Scanning...';
+            _isBusy = true;
+            is_image_selected = true;
+          });
+
+          await Future.delayed(Duration(milliseconds: 100));
+          await scanQRFromImage();
+        } else {
+          setState(() {
+            _scanResult = 'Failed to load selected image';
+            is_image_selected = false;
+          });
+        }
+      } else {
+        setState(() {
+          is_image_selected = false;
+          _scanResult = 'No image selected';
+        });
+      }
+    } catch (e) {
+      print('Image selection error: $e');
+      setState(() {
+        _scanResult = 'Error selecting image: $e';
+        _isBusy = false;
+        is_image_selected = false;
+      });
+    }
+  }
+
+  Future<bool> _checkPermissions() async {
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt <= 32) {
+        return await Permission.storage.isGranted;
+      } else {
+        return await Permission.photos.isGranted;
+      }
+    }
+    return true;
+  }
+
+  void _showPermissionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Permission Required'),
+        content: Text(
+          'This app needs access to your photos to scan QR codes from images.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              openAppSettings();
+            },
+            child: Text('Settings'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFF8F9FA),
+      appBar: AppBar(
+        elevation: 0,
+        leading: Container(
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 8,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: IconButton(
+            onPressed: () {}, //=> Navigator.pop(context),
+            icon: Icon(Icons.arrow_back, color: Color(0xFF6C63FF)),
+          ),
+        ),
+        title: Text(
+          'Image Scanner',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 24,
+            color: Color(0xFF2D2D2D),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
+      body: Column(
+        children: [
+          // Image Display Section
+          Expanded(
+            flex: 3,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 20,
+                      offset: Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: (_imageFile != null)
+                      ? Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: InteractiveViewer(
+                            child: Image.file(
+                              _imageFile!,
+                              width: double.infinity,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 120,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF6C63FF),
+                                      Color(0xFF5A52FF),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(60),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0xFF6C63FF).withOpacity(0.3),
+                                      blurRadius: 20,
+                                      offset: Offset(0, 8),
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  Icons.photo_library_outlined,
+                                  size: 60,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 24),
+                              Text(
+                                'No Image Selected',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF2D2D2D),
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Text(
+                                'Tap the + button to select an image\nfrom your gallery',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF6C757D),
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                ),
+              ),
+            ),
+          ),
+
+          // Results Section
+          Expanded(
+            flex: 2,
+            child: Container(
+              margin: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 20,
+                    offset: Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: _isBusy
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFF6C63FF), Color(0xFF5A52FF)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Center(
+                            child: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 3,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 24),
+                        Text(
+                          'Scanning Image...',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF2D2D2D),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Please wait while we analyze your image',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF6C757D),
+                          ),
+                        ),
+                      ],
+                    )
+                  : (is_image_selected == false)
+                  ? Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF8F9FA),
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(
+                                color: Color(0xFFE9ECEF),
+                                width: 2,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.qr_code_scanner_outlined,
+                              size: 40,
+                              color: Color(0xFF6C757D),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Ready to Scan',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF2D2D2D),
+                            ),
+                          ),
+                          SizedBox(height: 12),
+                          Text(
+                            'Select an image containing a QR code to get started',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF6C757D),
+                              height: 1.4,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.all(24),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Scan Results',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF2D2D2D),
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                Expanded(
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFF8F9FA),
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(
+                                        color: Color(0xFFE9ECEF),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: SelectableText(
+                                        _scanResult,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: (_is_result_url)
+                                              ? Color(0xFF6C63FF)
+                                              : Color(0xFF2D2D2D),
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 52,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color(0xFF6C63FF),
+                                        Color(0xFF5A52FF),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(
+                                          0xFF6C63FF,
+                                        ).withOpacity(0.3),
+                                        blurRadius: 12,
+                                        offset: Offset(0, 6),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      Clipboard.setData(
+                                        ClipboardData(text: _scanResult),
+                                      );
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.check,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(width: 8),
+                                              Text('Copied to clipboard'),
+                                            ],
+                                          ),
+                                          backgroundColor: Color(0xFF4CAF50),
+                                          behavior: SnackBarBehavior.floating,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(Icons.copy_outlined, size: 20),
+                                    label: Text(
+                                      'Copy',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      foregroundColor: Colors.white,
+                                      shadowColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 16),
+                              Expanded(
+                                child: Container(
+                                  height: 52,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color(0xFF6C63FF),
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      String url = _scanResult;
+                                      if (url.startsWith('http://') ||
+                                          url.startsWith('https://') ||
+                                          url.startsWith('www.')) {
+                                        setState(() {
+                                          _is_result_url = true;
+                                        });
+                                        try {
+                                          launchUrl(Uri.parse(url));
+                                        } catch (e) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.error_outline,
+                                                    color: Colors.white,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Text('Invalid URL'),
+                                                ],
+                                              ),
+                                              backgroundColor: Color(
+                                                0xFFFF5722,
+                                              ),
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              duration: Duration(seconds: 2),
+                                            ),
+                                          );
+                                        }
+                                      } else {
+                                        setState(() {
+                                          _is_result_url = false;
+                                        });
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.error_outline,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(width: 8),
+                                                Text('Invalid URL'),
+                                              ],
+                                            ),
+                                            backgroundColor: Color(0xFFFF5722),
+                                            behavior: SnackBarBehavior.floating,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.open_in_browser_outlined,
+                                      size: 20,
+                                    ),
+                                    label: Text(
+                                      'Open URL',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      foregroundColor: Color(0xFF6C63FF),
+                                      shadowColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF6C63FF), Color(0xFF5A52FF)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF6C63FF).withOpacity(0.4),
+              blurRadius: 16,
+              offset: Offset(0, 8),
+            ),
+          ],
+        ),
+        child: FloatingActionButton(
+          onPressed: _isBusy ? null : _getImageAndScan,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: Icon(
+            Icons.add_photo_alternate_outlined,
+            color: Colors.white,
+            size: 28,
+          ),
+        ),
+      ),
+    );
+  }
+}

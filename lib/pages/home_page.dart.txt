@@ -1,0 +1,685 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
+import 'package:qrcodescannerv2/pages/history_page.dart';
+import 'package:qrcodescannerv2/pages/image_scan.dartt';
+import 'package:qrcodescannerv2/pages/setting_page.dart';
+import 'package:qrcodescannerv2/providers/states_check.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  var _result;
+  QRViewController? controller;
+  // ignore: non_constant_identifier_names
+  bool _control_camera = false;
+  bool _flashStatus = false;
+  // ignore: non_constant_identifier_names
+  final bool _start_scanning = true;
+  // ignore: non_constant_identifier_names
+  bool _is_result_url = false;
+  bool _is_home = true;
+  //Check if  screen is  home_page
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid && _start_scanning == false) {
+      controller!.pauseCamera();
+    } else if (Platform.isIOS && _start_scanning == false) {
+      controller!.resumeCamera();
+    }
+  }
+
+  //permissions for  camera
+  @override
+  void initState() {
+    super.initState();
+    Permission.camera.request();
+    Permission.storage.request();
+    if (Permission.camera.isGranted == false) {
+      // Handle permission denied
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Camera permission is required to use this feature.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+
+    if (Permission.storage.isGranted == false) {
+      // Handle permission denied
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Storage permission is required to use this feature.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // ignore: deprecated_member_use
+    controller?.dispose();
+    _is_home = false;
+  }
+
+  void _showbanner() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('will be  implimented  soon.'),
+        duration: Duration(seconds: 2),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        showCloseIcon: true,
+      ),
+    );
+  }
+
+  Widget modelChip(
+    String title,
+    Icon icon,
+    Function onTap, {
+    Function? onLongPress,
+  }) {
+    return GestureDetector(
+      onLongPress: () {
+        if (onLongPress != null) {
+          onLongPress();
+        }
+      },
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: (_flashStatus == true && title == 'Flash')
+                ? [Color(0xFF6C63FF), Color(0xFF5A52FF)]
+                : [Colors.white, Colors.grey.shade50],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(25),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
+          border: Border.all(
+            color: (_flashStatus == true && title == 'Flash')
+                ? Color(0xFF6C63FF)
+                : Colors.grey.shade200,
+            width: 0,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon.icon,
+              color: (_flashStatus == true && title == 'Flash')
+                  ? Colors.white
+                  : Color(0xFF6C63FF),
+              size: 20,
+            ),
+            SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyle(
+                color: (_flashStatus == true && title == 'Flash')
+                    ? Colors.white
+                    : Color(0xFF2D2D2D),
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _toggleFlash() async {
+    await controller!.toggleFlash();
+    setState(() {
+      _flashStatus = !_flashStatus;
+    });
+  }
+
+  void _pauseQRCode() async {
+    await controller!.pauseCamera();
+    setState(() {
+      _control_camera = !_control_camera;
+    });
+
+    // var res0 = await controller!.getSystemFeatures();
+    //log(res0.hasBackCamera.);
+  }
+
+  void _resumeCamera() async {
+    if (_control_camera == false) {
+      await controller!.pauseCamera();
+    } else {
+      await controller!.resumeCamera();
+    }
+    setState(() {
+      _control_camera = !_control_camera;
+    });
+  }
+
+  void _handleCamera() {
+    if (_control_camera == true) {
+      _resumeCamera();
+    } else {
+      _pauseQRCode();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFFF8F9FA),
+      appBar: AppBar(
+        elevation: 0,
+        leading: Container(
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6C63FF), Color(0xFF5A52FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(Icons.qr_code_scanner, color: Colors.white),
+        ),
+        title: Text(
+          'QR Scanner',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 24,
+            color: Color(0xFF2D2D2D),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PopupMenuButton(
+              borderRadius: BorderRadius.circular(12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              color: Colors.white,
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'settings',
+                  child: ListTile(
+                    leading: Icon(Icons.settings_outlined),
+                    title: Text('Settings'),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'history',
+                  child: ListTile(
+                    leading: Icon(Icons.history_outlined),
+                    title: Text('History'),
+                  ),
+                ),
+              ],
+              onSelected: (value) {
+                if (value == 'settings') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsPage()),
+                  );
+                } else if (value == 'history') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HistoryPage()),
+                  );
+                  // Handle history action
+                }
+              },
+              child: Icon(Icons.menu, color: Color(0xFF6C63FF)),
+            ),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // QR Scanner Section
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+            child: Container(
+              height: 320,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 20,
+                    offset: Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Consumer<HomePageState>(
+                builder: (context, ishome, child) {
+                  // Container(child: Text('SCan your  qr code'))
+                  if (ishome.is_home != true) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      child: QRView(
+                        key: qrKey,
+                        onQRViewCreated: _onQRViewCreated,
+                        overlay: QrScannerOverlayShape(
+                          borderColor: Color(0xFF6C63FF),
+                          overlayColor: Colors.black.withOpacity(0.7),
+                          borderRadius: 20,
+                          borderLength: 40,
+                          borderWidth: 6,
+                          cutOutSize: 280,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(24),
+                      // child: Container(child: Text('Scan your  QRCODE')),
+                    );
+                  }
+                },
+                //child: Text('hello'),
+              ),
+            ),
+          ),
+          // Control Chips Section
+          Container(
+            height: 70,
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              children: [
+                modelChip(
+                  'Pick image',
+                  Icon(Icons.photo_library_outlined),
+                  () {
+                    print("push  image  scan");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          // context.read<HomePageState>().is_home_exited = false;
+                          //controller!.stopCamera();
+                          return QRImageScannerPage();
+                        },
+                      ),
+                    );
+                  },
+                  onLongPress: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Pick image from your gallery'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(width: 12),
+                modelChip('Pause', Icon(Icons.pause_circle_outline), () {
+                  _handleCamera();
+                }),
+                SizedBox(width: 12),
+                modelChip(
+                  'Flash',
+                  _flashStatus
+                      ? Icon(Icons.flash_on)
+                      : Icon(Icons.flash_off_outlined),
+                  () {
+                    _toggleFlash();
+                  },
+                ),
+                SizedBox(width: 12),
+                modelChip('History', Icon(Icons.history_outlined), () {
+                  _showbanner();
+                }),
+                SizedBox(width: 12),
+                modelChip('Settings', Icon(Icons.settings_outlined), () {
+                  _showbanner();
+                }),
+              ],
+            ),
+          ),
+
+          //_results Section
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 20,
+                    offset: Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (_result != null) ...[
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFF4CAF50), Color(0xFF45A049)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(40),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xFF4CAF50).withOpacity(0.3),
+                                blurRadius: 20,
+                                offset: Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.check_circle_outline,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        const Text(
+                          'QR Code Detected',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 24,
+                            color: Color(0xFF2D2D2D),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF8F9FA),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: Color(0xFFE9ECEF),
+                              width: 1,
+                            ),
+                          ),
+                          child: SingleChildScrollView(
+                            child: SelectableText(
+                              onTap: () {
+                                Clipboard.setData(
+                                  ClipboardData(text: '${_result!.code}'),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Row(
+                                      children: [
+                                        Icon(Icons.check, color: Colors.white),
+                                        SizedBox(width: 8),
+                                        Text('Copied to clipboard'),
+                                      ],
+                                    ),
+                                    backgroundColor: Color(0xFF4CAF50),
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                              '${_result!.code}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: (_is_result_url == true)
+                                    ? Color(0xFF6C63FF)
+                                    : Color(0xFF2D2D2D),
+                                height: 1.4,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xFF6C63FF),
+                                      Color(0xFF5A52FF),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0xFF6C63FF).withOpacity(0.3),
+                                      blurRadius: 12,
+                                      offset: Offset(0, 6),
+                                    ),
+                                  ],
+                                ),
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    Clipboard.setData(
+                                      ClipboardData(text: '${_result!.code}'),
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.check,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text('Copied to clipboard'),
+                                          ],
+                                        ),
+                                        backgroundColor: Color(0xFF4CAF50),
+                                        behavior: SnackBarBehavior.floating,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(Icons.copy_outlined, size: 20),
+                                  label: Text(
+                                    'Copy',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    foregroundColor: Colors.white,
+                                    shadowColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Container(
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xFF6C63FF),
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    String url = '${_result!.code}';
+                                    if (url.startsWith('http://') ||
+                                        url.startsWith('https://') ||
+                                        url.startsWith('www.')) {
+                                      setState(() {
+                                        _is_result_url = true;
+                                      });
+                                      launchUrl(Uri.parse(url));
+                                    } else {
+                                      setState(() {
+                                        _is_result_url = false;
+                                      });
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.error_outline,
+                                                color: Colors.white,
+                                              ),
+                                              SizedBox(width: 8),
+                                              Text('Invalid URL'),
+                                            ],
+                                          ),
+                                          backgroundColor: Color(0xFFFF5722),
+                                          behavior: SnackBarBehavior.floating,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.open_in_browser_outlined,
+                                    size: 20,
+                                  ),
+                                  label: Text(
+                                    'Open URL',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    foregroundColor: Color(0xFF6C63FF),
+                                    shadowColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ] else ...[
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFF6C63FF), Color(0xFF5A52FF)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(50),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xFF6C63FF).withOpacity(0.3),
+                                blurRadius: 20,
+                                offset: Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.qr_code_scanner_outlined,
+                            color: Colors.white,
+                            size: 48,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        const Text(
+                          'Ready to Scan',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF2D2D2D),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Position a QR code inside the frame to scan it automatically',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF6C757D),
+                            fontSize: 16,
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        _result = scanData;
+      });
+    });
+  }
+}

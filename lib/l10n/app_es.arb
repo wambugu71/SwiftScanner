@@ -1,0 +1,170 @@
+{
+  "@@locale": "es",
+  "appTitle": "Swift Scan",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "navScan": "Escanear",
+  "@navScan": {
+    "description": "Navigation label for scan tab"
+  },
+  "navHistory": "Historial",
+  "@navHistory": {
+    "description": "Navigation label for history tab"
+  },
+  "navSettings": "Configuración",
+  "@navSettings": {
+    "description": "Navigation label for settings tab"
+  },
+  "navAbout": "Acerca de",
+  "@navAbout": {
+    "description": "Navigation label for about tab"
+  },
+  "homeTitle": "Escáner de Código QR",
+  "@homeTitle": {
+    "description": "Title for the home page"
+  },
+  "homeInstruction": "Apunta tu cámara a un código QR para escanearlo",
+  "@homeInstruction": {
+    "description": "Instruction text on home page"
+  },
+  "homeFlashOn": "Flash Encendido",
+  "@homeFlashOn": {
+    "description": "Flash on button text"
+  },
+  "homeFlashOff": "Flash Apagado",
+  "@homeFlashOff": {
+    "description": "Flash off button text"
+  },
+  "homeSwitchCamera": "Cambiar Cámara",
+  "@homeSwitchCamera": {
+    "description": "Switch camera button text"
+  },
+  "homeSelectImage": "Seleccionar Imagen",
+  "@homeSelectImage": {
+    "description": "Select image button text"
+  },
+  "settingsTitle": "Configuración",
+  "@settingsTitle": {
+    "description": "Settings page title"
+  },
+  "settingsLanguage": "Idioma",
+  "@settingsLanguage": {
+    "description": "Language setting label"
+  },
+  "settingsHapticFeedback": "Retroalimentación Háptica",
+  "@settingsHapticFeedback": {
+    "description": "Haptic feedback setting label"
+  },
+  "settingsHapticFeedbackDesc": "Vibrar cuando se detecte un código QR",
+  "@settingsHapticFeedbackDesc": {
+    "description": "Haptic feedback setting description"
+  },
+  "introWelcome": "Bienvenido a Swift Scan",
+  "@introWelcome": {
+    "description": "Welcome message on intro page"
+  },
+  "introTitle1": "Escanear Códigos QR",
+  "@introTitle1": {
+    "description": "First intro page title"
+  },
+  "introDesc1": "Escanea rápidamente cualquier código QR usando tu cámara con detección ultrarrápida",
+  "@introDesc1": {
+    "description": "First intro page description"
+  },
+  "introTitle2": "Ver Historial",
+  "@introTitle2": {
+    "description": "Second intro page title"
+  },
+  "introDesc2": "Mantén un registro de todos tus códigos escaneados y accede a ellos en cualquier momento",
+  "@introDesc2": {
+    "description": "Second intro page description"
+  },
+  "introTitle3": "Compartir y Guardar",
+  "@introTitle3": {
+    "description": "Third intro page title"
+  },
+  "introDesc3": "Copia, comparte o abre contenido escaneado con solo un toque",
+  "@introDesc3": {
+    "description": "Third intro page description"
+  },
+  "introNext": "Siguiente",
+  "@introNext": {
+    "description": "Next button text on intro page"
+  },  "introGetStarted": "Comenzar",
+  "@introGetStarted": {
+    "description": "Get started button text on intro page"
+  },
+  "aboutTitle": "Acerca de Swift Scan",
+  "@aboutTitle": {
+    "description": "About page title"
+  },
+  "aboutVersion": "Versión",
+  "@aboutVersion": {
+    "description": "Version label on about page"
+  },
+  "aboutDescription": "Swift Scan es un potente e intuitivo escáner de códigos QR que hace que escanear códigos sea más rápido y fácil que nunca. Construido con tecnología moderna para proporcionar detección ultrarrápida y una experiencia de usuario perfecta.",
+  "@aboutDescription": {
+    "description": "App description on about page"
+  },
+  "aboutFeatures": "Características",
+  "@aboutFeatures": {
+    "description": "Features section title on about page"
+  },
+  "aboutFeature1": "Detección ultrarrápida de códigos QR",
+  "@aboutFeature1": {
+    "description": "First feature description"
+  },
+  "aboutFeature2": "Soporte para múltiples formatos de códigos QR",
+  "@aboutFeature2": {
+    "description": "Second feature description"
+  },
+  "aboutFeature3": "Historial de escaneos con fácil acceso",
+  "@aboutFeature3": {
+    "description": "Third feature description"
+  },
+  "aboutFeature4": "Compartir y guardar contenido escaneado",
+  "@aboutFeature4": {
+    "description": "Fourth feature description"
+  },
+  "aboutFeature5": "Soporte para temas oscuros y claros",
+  "@aboutFeature5": {
+    "description": "Fifth feature description"
+  },
+  "aboutFeature6": "Soporte para múltiples idiomas",
+  "@aboutFeature6": {
+    "description": "Sixth feature description"
+  },
+  "aboutDeveloper": "Desarrollador",
+  "@aboutDeveloper": {
+    "description": "Developer section title"
+  },
+  "aboutDeveloperName": "Equipo Swift Scan",
+  "@aboutDeveloperName": {
+    "description": "Developer name"
+  },
+  "aboutContact": "Contáctanos",
+  "@aboutContact": {
+    "description": "Contact section title"
+  },
+  "aboutEmail": "Correo Electrónico",
+  "@aboutEmail": {
+    "description": "Email label"
+  },
+  "aboutWebsite": "Sitio Web",
+  "@aboutWebsite": {
+    "description": "Website label"
+  },
+  "aboutPrivacy": "Política de Privacidad",
+  "@aboutPrivacy": {
+    "description": "Privacy policy link"
+  },
+  "aboutTerms": "Términos de Servicio",
+  "@aboutTerms": {
+    "description": "Terms of service link"
+  },
+  "aboutLicenses": "Licencias de Código Abierto",
+  "@aboutLicenses": {
+    "description": "Open source licenses link"
+  }
+}

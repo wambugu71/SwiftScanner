@@ -18,6 +18,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navHistory => 'Historial';
 
   @override
+  String get navGenerate => 'Generar';
+
+  @override
   String get navSettings => 'Configuración';
 
   @override

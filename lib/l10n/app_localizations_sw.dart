@@ -18,6 +18,9 @@ class AppLocalizationsSw extends AppLocalizations {
   String get navHistory => 'Historia';
 
   @override
+  String get navGenerate => 'Tengeneza';
+
+  @override
   String get navSettings => 'Mipangilio';
 
   @override

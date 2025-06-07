@@ -1,8 +1,8 @@
 {
   "@@locale": "sw",
-  "appTitle": "Swift Scan",
-  "navScan": "Chunguza",
+  "appTitle": "Swift Scan",  "navScan": "Chunguza",
   "navHistory": "Historia",
+  "navGenerate": "Tengeneza",
   "navSettings": "Mipangilio",
   "navAbout": "Kuhusu",
   "homeTitle": "Kichunguzi cha QR Code",

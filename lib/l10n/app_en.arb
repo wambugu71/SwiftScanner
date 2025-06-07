@@ -7,10 +7,13 @@
   "navScan": "Scan",
   "@navScan": {
     "description": "Navigation label for scan tab"
-  },
-  "navHistory": "History",
+  },  "navHistory": "History",
   "@navHistory": {
     "description": "Navigation label for history tab"
+  },
+  "navGenerate": "Generate",
+  "@navGenerate": {
+    "description": "Navigation label for generate tab"
   },
   "navSettings": "Settings",
   "@navSettings": {

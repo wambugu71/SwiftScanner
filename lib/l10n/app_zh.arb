@@ -7,10 +7,13 @@
   "navScan": "扫描",
   "@navScan": {
     "description": "Navigation label for scan tab"
-  },
-  "navHistory": "历史",
+  },  "navHistory": "历史",
   "@navHistory": {
     "description": "Navigation label for history tab"
+  },
+  "navGenerate": "生成",
+  "@navGenerate": {
+    "description": "Navigation label for generate tab"
   },
   "navSettings": "设置",
   "@navSettings": {

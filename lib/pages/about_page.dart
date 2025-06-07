@@ -1,27 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:swiftscan/constants/app_themes.dart';
 import 'package:swiftscan/l10n/app_localizations.dart';
+import 'package:swiftscan/pages/privacy_policy_page.dart';
+import 'package:swiftscan/pages/terms_of_service_page.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
-
-  void _showComingSoonSnackBar(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(Icons.info_outline, color: Colors.white),
-            SizedBox(width: 8),
-            Text('Feature coming soon!'),
-          ],
-        ),
-        backgroundColor: Color(0xFF6C63FF),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
 
   Widget _buildInfoSection(
     BuildContext context,
@@ -249,24 +233,29 @@ class AboutPage extends StatelessWidget {
                 _buildInfoTile(
                   context: context,
                   title: l10n.aboutWebsite,
-                  subtitle: 'www.swiftscan.app',
+                  subtitle: 'comming soon...',
                   icon: Icons.language,
-                  onTap: () => _showComingSoonSnackBar(context),
+                  onTap: () {},
                   trailing: Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
                     color: AppThemes.getTextColor(context).withOpacity(0.5),
                   ),
                 ),
-              ]),
-
-              // Legal Section
+              ]), // Legal Section
               _buildInfoSection(context, 'Legal', [
                 _buildInfoTile(
                   context: context,
                   title: l10n.aboutPrivacy,
                   icon: Icons.privacy_tip,
-                  onTap: () => _showComingSoonSnackBar(context),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PrivacyPolicyPage(),
+                      ),
+                    );
+                  },
                   trailing: Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
@@ -277,7 +266,14 @@ class AboutPage extends StatelessWidget {
                   context: context,
                   title: l10n.aboutTerms,
                   icon: Icons.description,
-                  onTap: () => _showComingSoonSnackBar(context),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsOfServicePage(),
+                      ),
+                    );
+                  },
                   trailing: Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
@@ -332,7 +328,7 @@ class AboutPage extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      '© 2024 Swift Scan Team',
+                      '© 2025 Swift Scan Team',
                       style: TextStyle(
                         fontSize: 12,
                         color: AppThemes.getTextColor(context).withOpacity(0.5),

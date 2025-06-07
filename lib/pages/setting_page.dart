@@ -6,6 +6,8 @@ import 'package:swiftscan/bloc/page_cubit.dart';
 import 'package:swiftscan/bloc/theme_cubit.dart';
 import 'package:swiftscan/constants/app_themes.dart';
 import 'package:swiftscan/l10n/app_localizations.dart';
+import 'package:swiftscan/pages/privacy_policy_page.dart';
+import 'package:swiftscan/pages/terms_of_service_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -419,9 +421,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   );
                 },
               ),
-            ]),
-
-            // Data & Privacy
+            ]), // Data & Privacy
             _buildSettingsSection('Data & Privacy', [
               _buildSwitchTile(
                 title: 'Save History',
@@ -443,6 +443,32 @@ class _SettingsPageState extends State<SettingsPage> {
                   setState(() {
                     _autoOpenUrlsEnabled = value;
                   });
+                },
+              ),
+              _buildActionTile(
+                title: 'Privacy Policy',
+                subtitle: 'How we handle your data and privacy',
+                icon: Icons.privacy_tip_outlined,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrivacyPolicyPage(),
+                    ),
+                  );
+                },
+              ),
+              _buildActionTile(
+                title: 'Terms of Service',
+                subtitle: 'Terms and conditions for using the app',
+                icon: Icons.gavel_outlined,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TermsOfServicePage(),
+                    ),
+                  );
                 },
               ),
               _buildActionTile(
@@ -576,7 +602,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icons.info_outline,
                 onTap: () {
                   // Navigate to About page (index 3 in the navigation)
-                  BlocProvider.of<PageCubit>(context).setPage(3);
+                  BlocProvider.of<PageCubit>(context).setPage(4);
                 },
               ),
             ]),

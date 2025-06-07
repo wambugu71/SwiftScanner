@@ -7,10 +7,13 @@
   "navScan": "ஸ்கேன்",
   "@navScan": {
     "description": "Navigation label for scan tab"
-  },
-  "navHistory": "வரலாறு",
+  },  "navHistory": "வரலாறு",
   "@navHistory": {
     "description": "Navigation label for history tab"
+  },
+  "navGenerate": "உருவாக்கு",
+  "@navGenerate": {
+    "description": "Navigation label for generate tab"
   },
   "navSettings": "அமைப்புகள்",
   "@navSettings": {

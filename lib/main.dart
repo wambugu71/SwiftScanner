@@ -16,6 +16,7 @@ import 'package:swiftscan/pages/about_page.dart';
 import 'package:swiftscan/pages/history_page.dart';
 import 'package:swiftscan/pages/home.dart';
 import 'package:swiftscan/pages/intro_page.dart';
+import 'package:swiftscan/pages/qr_generator_page.dart';
 import 'package:swiftscan/pages/setting_page.dart';
 import 'package:swiftscan/providers/states_check.dart';
 
@@ -91,7 +92,13 @@ class QrCodeScanner extends StatefulWidget {
 }
 
 class _QrCodeScannerState extends State<QrCodeScanner> {
-  var _pages = [Home(), HistoryPage(), SettingsPage(), AboutPage()];
+  var _pages = [
+    Home(),
+    HistoryPage(),
+    QRGeneratorPage(),
+    SettingsPage(),
+    AboutPage(),
+  ];
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -126,6 +133,17 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
                   color: AppThemes.getPrimaryColor(context),
                 ),
                 label: l10n.navHistory,
+                labelStyle: TextStyle(
+                  color: AppThemes.getTextColor(context),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              CurvedNavigationBarItem(
+                child: Icon(
+                  Icons.qr_code_2,
+                  color: AppThemes.getPrimaryColor(context),
+                ),
+                label: 'Generate',
                 labelStyle: TextStyle(
                   color: AppThemes.getTextColor(context),
                   fontWeight: FontWeight.w600,

@@ -124,6 +124,12 @@ abstract class AppLocalizations {
   /// **'History'**
   String get navHistory;
 
+  /// Navigation label for generate tab
+  ///
+  /// In en, this message translates to:
+  /// **'Generate'**
+  String get navGenerate;
+
   /// Navigation label for settings tab
   ///
   /// In en, this message translates to:

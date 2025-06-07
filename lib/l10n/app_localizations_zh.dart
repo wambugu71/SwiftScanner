@@ -18,6 +18,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get navHistory => '历史';
 
   @override
+  String get navGenerate => '生成';
+
+  @override
   String get navSettings => '设置';
 
   @override

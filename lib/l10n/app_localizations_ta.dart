@@ -18,6 +18,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get navHistory => 'வரலாறு';
 
   @override
+  String get navGenerate => 'உருவாக்கு';
+
+  @override
   String get navSettings => 'அமைப்புகள்';
 
   @override

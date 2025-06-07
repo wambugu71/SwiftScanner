@@ -2,9 +2,8 @@
 
 <div align="center">
   <img src="assets/logo/splash.jpg" alt="Swift Scan Logo" width="200" height="200" style="border-radius: 20px;">
-  
-  [![Flutter](https://img.shields.io/badge/Flutter-3.8.0+-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev/)
-  [![Dart](https://img.shields.io/badge/Dart-3.0+-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev/)
+    [![Flutter](https://img.shields.io/badge/Flutter-3.32.2+-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev/)
+  [![Dart](https://img.shields.io/badge/Dart-3.8.1+-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev/)
   [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
   [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Windows-lightgrey?style=for-the-badge)](https://flutter.dev/docs/development/tools/sdk/release-notes)
 </div>
@@ -72,7 +71,7 @@ lib/
 
 ### Key Technologies
 
-- **Flutter 3.8.0+** - Cross-platform UI framework
+- **Flutter 3.32.2+** - Cross-platform UI framework
 - **BLoC Pattern** - State management architecture
 - **Mobile Scanner** - Advanced QR code scanning
 - **Shared Preferences** - Local data persistence
@@ -84,8 +83,8 @@ lib/
 
 ### Prerequisites
 
-- Flutter SDK 3.8.0 or higher
-- Dart SDK 3.0 or higher
+- Flutter SDK 3.32.2 or higher
+- Dart SDK 3.8.1 or higher
 - Android Studio / VS Code
 - Android SDK (for Android development)
 - Xcode (for iOS development)
@@ -94,8 +93,8 @@ lib/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/swiftscan.git
-   cd swiftscan
+   https://github.com/wambugu71/SwiftScanner.git
+   cd SwiftScanner
    ```
 
 2. **Install dependencies**
@@ -314,9 +313,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Email**: support@swiftscan.app
-- **Website**: www.swiftscan.app
-- **Issues**: [GitHub Issues](https://github.com/yourusername/swiftscan/issues)
+- **Email**: wambugukinyua125@gmail.com
+- **Website**: soon...
+- **Issues**: [GitHub Issues](https://github.com/wambugu71/SwiftScanner/issues)
 
 ---
 

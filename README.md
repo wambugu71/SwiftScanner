@@ -2,10 +2,13 @@
 
 <div align="center">
   <img src="assets/logo/splash.jpg" alt="Swift Scan Logo" width="200" height="200" style="border-radius: 20px;">
-[![Flutter](https://img.shields.io/badge/Flutter-3.32.2+-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev/)
-[![Dart](https://img.shields.io/badge/Dart-3.8.1+-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Windows-lightgrey?style=for-the-badge)](https://flutter.dev/docs/development/tools/sdk/release-notes)
+  
+  <br/>
+  
+  [![Flutter](https://img.shields.io/badge/Flutter-3.32.2+-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev/)
+  [![Dart](https://img.shields.io/badge/Dart-3.8.1+-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev/)
+  [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+  [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Windows-lightgrey?style=for-the-badge)](https://flutter.dev/docs/development/tools/sdk/release-notes)
 </div>
 
 ## 🌟 Overview
